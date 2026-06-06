@@ -48,6 +48,7 @@ export function ConfigurationDialog({ projectId, open, onOpenChange }: Configura
         description: "Configuration created successfully",
       });
       queryClient.invalidateQueries({ queryKey: ["project", projectId] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] }); // Refresh dashboard stats too
       onOpenChange(false);
       setConfigJson("");
     },

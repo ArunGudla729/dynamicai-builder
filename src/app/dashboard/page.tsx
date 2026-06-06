@@ -25,6 +25,9 @@ export default function DashboardPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
     queryFn: fetchDashboardStats,
+    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    staleTime: 0, // Always consider data stale
   });
 
   const projectCount = data?.projects?.length || 0;

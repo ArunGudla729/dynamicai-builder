@@ -53,6 +53,9 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ id: st
   const { data, isLoading } = useQuery({
     queryKey: ["project", id],
     queryFn: () => fetchProject(id),
+    refetchInterval: 3000, // Refetch every 3 seconds
+    refetchOnWindowFocus: true, // Refetch when window regains focus
+    staleTime: 0, // Always consider data stale
   });
 
   const deleteMutation = useMutation({
