@@ -22,6 +22,27 @@ export class ConfigurationRepository {
     });
   }
 
+  async findAll() {
+    return prisma.configuration.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        project: true,
+        entities: true,
+      },
+    });
+  }
+
+  async findByProject(projectId: string) {
+    return prisma.configuration.findMany({
+      where: { projectId },
+      orderBy: { createdAt: "desc" },
+      include: {
+        project: true,
+        entities: true,
+      },
+    });
+  }
+
   async findByProjectId(projectId: string) {
     return prisma.configuration.findMany({
       where: { projectId },

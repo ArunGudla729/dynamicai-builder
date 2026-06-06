@@ -7,6 +7,35 @@ import { errorHandler } from "@/middleware/error-handler";
 import { dynamicFormService } from "@/services/dynamic-form.service";
 import { auditLogService } from "@/services/audit-log.service";
 
+export async function GET(req: NextRequest) {
+  try {
+    await requireAuth();
+    
+    const { searchParams } = new URL(req.url);
+    const projectId = searchParams.get("projectId");
+    const type = searchParams.get("type");
+
+    let configurations;
+    if (projectId) {
+      configurations = await configurationRepository.findByProject(projectId);
+    } else {
+      configurations = await configurationRepository.findAll();
+    }
+
+    // Filter by type if specified
+    if (type && configurations) {
+      configurations = configurations.filter((c: any) => c.type === type);
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: configurations || [],
+    });
+  } catch (error) {
+    return errorHandler(error);
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     console.log("=== Configuration Create Request ===");
